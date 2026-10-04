@@ -1,0 +1,1477 @@
+/* ==========================================================================
+   Tasarım değişkenleri — gece ("akşam gökyüzü") varsayılan, gündüz aşağıda
+   ========================================================================== */
+
+/*
+ * Renk değişkenlerini <color> olarak kaydediyoruz; böylece tema değişince
+ * gökyüzü gradyanı dahil tüm renkler yumuşakça geçiş yapabiliyor. @property
+ * desteklemeyen tarayıcılarda tema yine değişir, yalnızca geçiş anlık olur.
+ */
+@property --sky-top { syntax: '<color>'; inherits: true; initial-value: transparent; }
+@property --sky-mid { syntax: '<color>'; inherits: true; initial-value: transparent; }
+@property --sky-low { syntax: '<color>'; inherits: true; initial-value: transparent; }
+@property --sky-bottom { syntax: '<color>'; inherits: true; initial-value: transparent; }
+@property --sky-glow { syntax: '<color>'; inherits: true; initial-value: transparent; }
+@property --text { syntax: '<color>'; inherits: true; initial-value: transparent; }
+@property --text-muted { syntax: '<color>'; inherits: true; initial-value: transparent; }
+@property --text-subtle { syntax: '<color>'; inherits: true; initial-value: transparent; }
+@property --text-inverse { syntax: '<color>'; inherits: true; initial-value: transparent; }
+@property --text-emphasis { syntax: '<color>'; inherits: true; initial-value: transparent; }
+@property --glass { syntax: '<color>'; inherits: true; initial-value: transparent; }
+@property --glass-strong { syntax: '<color>'; inherits: true; initial-value: transparent; }
+@property --glass-light { syntax: '<color>'; inherits: true; initial-value: transparent; }
+@property --glass-hover { syntax: '<color>'; inherits: true; initial-value: transparent; }
+@property --glass-border { syntax: '<color>'; inherits: true; initial-value: transparent; }
+@property --navbar-bg { syntax: '<color>'; inherits: true; initial-value: transparent; }
+@property --menu-bg { syntax: '<color>'; inherits: true; initial-value: transparent; }
+@property --accent { syntax: '<color>'; inherits: true; initial-value: transparent; }
+@property --accent-strong { syntax: '<color>'; inherits: true; initial-value: transparent; }
+@property --accent-soft { syntax: '<color>'; inherits: true; initial-value: transparent; }
+@property --warm { syntax: '<color>'; inherits: true; initial-value: transparent; }
+@property --warm-soft { syntax: '<color>'; inherits: true; initial-value: transparent; }
+@property --danger { syntax: '<color>'; inherits: true; initial-value: transparent; }
+@property --danger-soft { syntax: '<color>'; inherits: true; initial-value: transparent; }
+@property --shadow-color { syntax: '<color>'; inherits: true; initial-value: transparent; }
+
+:root {
+  /* Arka plan: lavanta-gri tepeden koyu mor-laciverte */
+  --sky-top: #7a74a6;
+  --sky-mid: #4d4779;
+  --sky-low: #2c2850;
+  --sky-bottom: #1b1932;
+  /* Sağ üstteki sıcak ışık */
+  --sky-glow: rgba(255, 196, 160, 0.22);
+
+  /* Metin */
+  --text: #f6f4ff;
+  --text-muted: rgba(236, 232, 255, 0.74);
+  --text-subtle: rgba(236, 232, 255, 0.5);
+  /* Metin renginde dolgulu butonların (°C/°F, Ara) üzerindeki yazı */
+  --text-inverse: #1b1932;
+  /* Bu butonların üzerine gelince alacağı renk */
+  --text-emphasis: #ffffff;
+
+  /* Cam (yarı saydam) yüzeyler */
+  --glass: rgba(29, 25, 58, 0.42);
+  --glass-strong: rgba(29, 25, 58, 0.62);
+  --glass-light: rgba(255, 255, 255, 0.08);
+  --glass-hover: rgba(255, 255, 255, 0.14);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --navbar-bg: rgba(40, 35, 75, 0.55);
+  /* Navbar'ın kendi bulanıklığı içinde iç içe blur çalışmadığı için zemin daha opak. */
+  --menu-bg: rgba(33, 29, 64, 0.97);
+
+  /* Vurgular */
+  --accent: #b7a9ff;
+  --accent-strong: #8f7dff;
+  --accent-soft: rgba(183, 169, 255, 0.18);
+  --accent-border: color-mix(in srgb, var(--accent) 58%, transparent);
+  --warm: #ffcf7a;
+  --warm-soft: rgba(255, 207, 122, 0.18);
+  --danger: #ffb4a8;
+  --danger-soft: rgba(255, 140, 120, 0.16);
+
+  /* Ölçüler */
+  --radius-xl: 32px;
+  --radius-lg: 24px;
+  --radius-md: 18px;
+  --radius-pill: 999px;
+  --space-section: 28px;
+  --gutter: 24px;
+
+  /* Gölgeler */
+  --shadow-color: rgb(14, 10, 40);
+  --shadow-soft: 0 12px 40px color-mix(in srgb, var(--shadow-color) 28%, transparent);
+  --shadow-lift: 0 18px 50px color-mix(in srgb, var(--shadow-color) 38%, transparent);
+
+  --theme-duration: 0.8s;
+
+  /* Arka plan hava animasyonları (yağmur çizgileri, kar taneleri) */
+  --rain-color: rgba(205, 212, 255, 0.5);
+  --snow-color: rgba(255, 255, 255, 0.85);
+
+  color-scheme: dark;
+  font-family:
+    system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.5;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+
+  /* Gündüz ↔ gece geçişi: değişkenler kökte yumuşakça değişir, tüm sayfa onları izler. */
+  transition-property:
+    --sky-top, --sky-mid, --sky-low, --sky-bottom, --sky-glow,
+    --text, --text-muted, --text-subtle, --text-inverse, --text-emphasis,
+    --glass, --glass-strong, --glass-light, --glass-hover, --glass-border, --navbar-bg, --menu-bg,
+    --accent, --accent-strong, --accent-soft, --warm, --warm-soft, --danger, --danger-soft,
+    --shadow-color;
+  transition-duration: var(--theme-duration);
+  transition-timing-function: ease;
+}
+
+/*
+ * Gündüz teması: şehrin Open-Meteo is_day verisine göre <html data-theme="day">
+ * olarak uygulanır (bkz. hooks/useDayNightTheme). Açık mavi-gri / lavanta gökyüzü,
+ * aydınlık cam kartlar ve koyu lacivert metin.
+ */
+:root[data-theme='day'] {
+  --sky-top: #b2c5ea;
+  --sky-mid: #c2cbed;
+  --sky-low: #d5d6f0;
+  --sky-bottom: #e4e3f4;
+  --sky-glow: rgba(255, 232, 190, 0.5);
+
+  --text: #1d1f3d;
+  --text-muted: rgba(29, 31, 61, 0.76);
+  --text-subtle: rgba(29, 31, 61, 0.64);
+  --text-inverse: #f7f6ff;
+  --text-emphasis: #0c0d24;
+
+  --glass: rgba(255, 255, 255, 0.55);
+  --glass-strong: rgba(255, 255, 255, 0.75);
+  --glass-light: rgba(255, 255, 255, 0.45);
+  --glass-hover: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(84, 92, 150, 0.16);
+  --navbar-bg: rgba(255, 255, 255, 0.5);
+  --menu-bg: rgba(250, 250, 255, 0.97);
+
+  --accent: #6b57de;
+  --accent-strong: #5542c8;
+  --accent-soft: rgba(107, 87, 222, 0.14);
+  --warm: #d4801a;
+  --warm-soft: rgba(212, 128, 26, 0.16);
+  --danger: #c23b2a;
+  --danger-soft: rgba(220, 80, 60, 0.12);
+
+  --shadow-color: rgba(72, 82, 140, 0.55);
+
+  /* Açık gökyüzünde beyaz çizgiler görünmez; daha koyu ve daha soluk */
+  --rain-color: rgba(70, 85, 150, 0.4);
+  --snow-color: rgba(255, 255, 255, 1);
+
+  color-scheme: light;
+}
+
+/* ==========================================================================
+   Temel
+   ========================================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  position: relative;
+  margin: 0;
+  min-height: 100vh;
+  background: var(--sky-bottom);
+}
+
+/* Sabit gökyüzü: kaydırırken arka plan yerinde kalır (iOS'ta da çalışır). */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+body::before {
+  background:
+    radial-gradient(ellipse 70% 45% at 85% 0%, var(--sky-glow), transparent 70%),
+    linear-gradient(
+      180deg,
+      var(--sky-top) 0%,
+      var(--sky-mid) 32%,
+      var(--sky-low) 68%,
+      var(--sky-bottom) 100%
+    );
+}
+
+/* Birkaç silik yıldız — yalnızca üst kısımda */
+body::after {
+  background-image:
+    radial-gradient(1.5px 1.5px at 12% 14%, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(1px 1px at 28% 6%, rgba(255, 255, 255, 0.55), transparent),
+    radial-gradient(1.5px 1.5px at 46% 18%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(1px 1px at 63% 9%, rgba(255, 255, 255, 0.6), transparent),
+    radial-gradient(1px 1px at 74% 24%, rgba(255, 255, 255, 0.4), transparent),
+    radial-gradient(1.5px 1.5px at 91% 12%, rgba(255, 255, 255, 0.55), transparent),
+    radial-gradient(1px 1px at 6% 30%, rgba(255, 255, 255, 0.4), transparent);
+  mask-image: linear-gradient(180deg, #000 0%, transparent 45%);
+  transition: opacity var(--theme-duration) ease;
+}
+
+/* Gündüz yıldızlar kaybolur. */
+:root[data-theme='day'] body::after {
+  opacity: 0;
+}
+
+h1,
+h2,
+p,
+dl,
+dd,
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Ekranda görünmez, ekran okuyucular okur. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ==========================================================================
+   Ortak yapı taşları
+   ========================================================================== */
+.container {
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-section);
+  padding-top: 24px;
+  padding-bottom: 64px;
+}
+
+/* Tüm kartların ortak cam yüzeyi */
+.glass {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+}
+
+.panel {
+  padding: 24px;
+  border-radius: var(--radius-xl);
+}
+
+.icon-button {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  color: var(--text-muted);
+  background: var(--glass-light);
+  border: 1px solid var(--glass-border);
+  border-radius: 50%;
+  transition: background 0.2s, color 0.2s, transform 0.1s;
+}
+
+.icon-button:hover:not(:disabled) {
+  color: var(--text);
+  background: var(--glass-hover);
+}
+
+.icon-button:active:not(:disabled) {
+  transform: scale(0.94);
+}
+
+.spinner {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  border: 2px solid color-mix(in srgb, var(--text) 25%, transparent);
+  border-top-color: var(--text);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.empty-text {
+  color: var(--text-muted);
+}
+
+/* Bölüm başlıkları */
+.section__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.section__title {
+  margin-bottom: 18px;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.section__header .section__title {
+  margin-bottom: 0;
+}
+
+.section__caption {
+  font-size: 0.8125rem;
+  color: var(--text-subtle);
+}
+
+/* ==========================================================================
+   Navbar + arama
+   ========================================================================== */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--navbar-bg);
+  border-bottom: 1px solid var(--glass-border);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+}
+
+.navbar__inner {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas: 'brand search actions';
+  align-items: center;
+  gap: 20px;
+  min-height: 68px;
+}
+
+.navbar__brand {
+  grid-area: brand;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.navbar__search {
+  grid-area: search;
+  display: flex;
+  justify-content: center;
+}
+
+.navbar__actions {
+  grid-area: actions;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Favoriler menüsü (navbar'daki yıldız + açılır panel) */
+.favorites-menu {
+  position: relative;
+}
+
+.favorites-menu__trigger.is-open {
+  color: var(--text);
+  background: var(--glass-hover);
+}
+
+.favorites-menu__trigger svg {
+  color: var(--warm);
+}
+
+.favorites-menu__badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 18px;
+  padding: 0 5px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+  color: var(--text-inverse);
+  background: var(--accent);
+  border-radius: var(--radius-pill);
+}
+
+.favorites-menu__panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 20;
+  width: min(300px, calc(100vw - 2 * var(--gutter)));
+  padding: 8px;
+  background: var(--menu-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lift);
+  transform-origin: top right;
+  animation: pop-in 0.16s ease-out;
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
+}
+
+.favorites-menu__title {
+  padding: 8px 12px 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-subtle);
+}
+
+.favorites-menu__empty {
+  padding: 10px 12px 14px;
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+}
+
+.favorites-menu__list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-height: min(360px, 60vh);
+  overflow-y: auto;
+  list-style: none;
+}
+
+.favorites-menu__item {
+  display: flex;
+  align-items: center;
+  border-radius: var(--radius-md);
+  transition: background 0.15s;
+}
+
+.favorites-menu__item:hover,
+.favorites-menu__item:focus-within {
+  background: var(--glass-light);
+}
+
+.favorites-menu__item.is-active {
+  background: var(--accent-soft);
+}
+
+.favorites-menu__select {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  padding: 10px 12px;
+  text-align: left;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-md);
+}
+
+.favorites-menu__name,
+.favorites-menu__country {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.favorites-menu__name {
+  font-weight: 500;
+}
+
+.favorites-menu__country {
+  font-size: 0.8125rem;
+  color: var(--text-subtle);
+}
+
+.favorites-menu__remove {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin-right: 6px;
+  font-size: 1.125rem;
+  line-height: 1;
+  color: var(--text-subtle);
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  transition: background 0.15s, color 0.15s;
+}
+
+.favorites-menu__remove:hover {
+  color: var(--danger);
+  background: var(--danger-soft);
+}
+
+/* °C / °F */
+.unit-toggle {
+  display: inline-flex;
+  padding: 3px;
+  background: var(--glass-light);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-pill);
+}
+
+.unit-toggle__button {
+  min-width: 42px;
+  height: 32px;
+  padding: 0 10px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-pill);
+  transition: background 0.2s, color 0.2s;
+}
+
+.unit-toggle__button.is-active {
+  color: var(--text-inverse);
+  background: var(--text);
+}
+
+/* Arama çubuğu */
+.search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 480px;
+  padding: 5px 5px 5px 18px;
+  background: var(--glass-light);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-pill);
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.search:focus-within {
+  background: var(--glass-hover);
+  border-color: var(--accent-border);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+.search__icon {
+  flex-shrink: 0;
+  color: var(--text-subtle);
+}
+
+.search__input {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 0;
+  font: inherit;
+  font-size: 0.9375rem;
+  color: var(--text);
+  background: transparent;
+  border: none;
+  outline: none;
+  text-overflow: ellipsis;
+}
+
+.search__input::placeholder {
+  color: var(--text-subtle);
+}
+
+.search__button {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  /* "Ara" ↔ "Aranıyor…" geçişinde buton zıplamasın. */
+  min-width: 108px;
+  height: 40px;
+  padding: 0 20px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text-inverse);
+  background: var(--text);
+  border: none;
+  border-radius: var(--radius-pill);
+  transition: background 0.2s, opacity 0.2s, transform 0.1s;
+}
+
+.search__button:hover:not(:disabled) {
+  background: var(--text-emphasis);
+}
+
+.search__button:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.search__button:disabled:not(.is-loading) {
+  opacity: 0.45;
+}
+
+.search__button.is-loading {
+  cursor: progress;
+}
+
+.search__button .spinner {
+  border-color: color-mix(in srgb, var(--text-inverse) 20%, transparent);
+  border-top-color: var(--text-inverse);
+}
+
+/* "Konumumu kullan": arama kutusunun içindeki küçük nişangah butonu */
+.search__locate {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  transition: background 0.2s, color 0.2s, transform 0.1s;
+}
+
+.search__locate:hover:not(:disabled) {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.search__locate:active:not(:disabled) {
+  transform: scale(0.94);
+}
+
+.search__locate:disabled:not(.is-loading) {
+  opacity: 0.45;
+}
+
+.search__locate.is-loading {
+  cursor: progress;
+}
+
+/* Son aramalar */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+  min-width: 0;
+}
+
+.chips__title {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.chips__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  background: var(--glass-light);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-pill);
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.chip:hover {
+  background: var(--glass-hover);
+}
+
+.chip.is-active {
+  background: var(--accent-soft);
+  border-color: var(--accent-border);
+}
+
+.chip__select {
+  padding: 6px 14px;
+  overflow: hidden;
+  font-size: 0.875rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-pill);
+}
+
+/* ==========================================================================
+   Yükleniyor / hata
+   ========================================================================== */
+.status {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.status--loading {
+  justify-content: center;
+  color: var(--text-muted);
+}
+
+.status--warning,
+.status--error {
+  align-items: flex-start;
+  padding: 18px 20px;
+}
+
+.status__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+}
+
+.status--warning .status__icon {
+  color: var(--warm);
+  background: var(--warm-soft);
+}
+
+.status--error .status__icon {
+  color: var(--danger);
+  background: var(--danger-soft);
+}
+
+.status__text {
+  min-width: 0;
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+}
+
+.status__title {
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* ==========================================================================
+   Hava durumu içeriği
+   ========================================================================== */
+.weather {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-section);
+  transition: opacity 0.2s;
+}
+
+.weather.is-loading {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Hero: kart yok, doğrudan gökyüzünün üzerinde */
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'info art'
+    'stats stats';
+  align-items: center;
+  gap: 8px 24px;
+  padding: 24px 0 8px;
+}
+
+.hero__info {
+  grid-area: info;
+  min-width: 0;
+}
+
+.hero__location {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+}
+
+.hero__city {
+  min-width: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+.hero__area {
+  margin: 2px 0 0 26px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  overflow-wrap: anywhere;
+}
+
+.hero__country {
+  margin: 2px 0 0 26px;
+  font-size: 0.9375rem;
+  color: var(--text-subtle);
+}
+
+/* Hava detaylarının altında: konum verisinin kaynağı (OpenStreetMap atfı) */
+.attribution {
+  margin-top: calc(var(--space-section) * -0.5);
+  font-size: 0.75rem;
+  text-align: center;
+  color: var(--text-subtle);
+}
+
+.hero__temp {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 8px;
+  font-size: clamp(5.5rem, 16vw, 9rem);
+  font-weight: 200;
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+
+.hero__unit {
+  margin: 0.18em 0 0 0.08em;
+  font-size: 0.32em;
+  font-weight: 300;
+  letter-spacing: 0;
+  color: var(--text-muted);
+}
+
+.hero__description {
+  margin-top: 4px;
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.hero__range {
+  margin-top: 4px;
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+}
+
+/* Şehir adının yanındaki yıldız: gösterilen şehri favorilere ekler/çıkarır */
+.favorite-button {
+  width: 34px;
+  height: 34px;
+}
+
+.favorite-button.is-active {
+  color: var(--warm);
+  background: var(--warm-soft);
+  border-color: color-mix(in srgb, var(--warm) 35%, transparent);
+}
+
+.hero__art {
+  grid-area: art;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* İkonun arkasındaki yumuşak ışık halesi */
+.hero__art::before {
+  content: '';
+  position: absolute;
+  inset: -10%;
+  z-index: -1;
+  background: radial-gradient(circle, rgba(255, 226, 180, 0.2), rgba(183, 169, 255, 0.08) 45%, transparent 70%);
+  filter: blur(24px);
+}
+
+.hero__art > svg {
+  width: 220px;
+  height: 220px;
+  filter: drop-shadow(0 18px 28px color-mix(in srgb, var(--shadow-color) 35%, transparent));
+}
+
+.hero__stats {
+  grid-area: stats;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 20px;
+}
+
+/* Bilgi kutusu (hero ve hava detayları) */
+.info-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  padding: 16px 18px;
+  border-radius: var(--radius-md);
+}
+
+.info-tile__label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}
+
+.info-tile__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-radius: 50%;
+}
+
+.info-tile__value {
+  font-size: 1.25rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.info-tile__value.is-empty {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-subtle);
+}
+
+.info-tile__hint {
+  margin-top: -4px;
+  font-size: 0.8125rem;
+  color: var(--text-subtle);
+}
+
+/* Saatlik tahmin: yatay akış */
+.hourly {
+  position: relative;
+  display: flex;
+  gap: 10px;
+  padding: 4px 4px 10px;
+  margin: -4px -4px 0;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--text) 20%, transparent) transparent;
+}
+
+.hourly:focus-visible {
+  border-radius: var(--radius-md);
+}
+
+.hourly__item {
+  display: flex;
+  flex: 0 0 76px;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 6px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  scroll-snap-align: start;
+  transition: background 0.2s;
+}
+
+.hourly__item:hover {
+  background: var(--glass-light);
+}
+
+.hourly__item.is-now {
+  background: linear-gradient(180deg, rgba(183, 169, 255, 0.4), rgba(143, 125, 255, 0.18));
+  border-color: rgba(183, 169, 255, 0.45);
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--shadow-color) 25%, transparent);
+}
+
+.hourly__time {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}
+
+.is-now .hourly__time {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.hourly__temp {
+  font-size: 1.0625rem;
+  font-weight: 600;
+}
+
+/* 7/15 günlük seçimi: küçük, °C/°F ile aynı dilde bir segment kontrol */
+.range-toggle {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-self: center;
+  padding: 3px;
+  background: var(--glass-light);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-pill);
+}
+
+.range-toggle__button {
+  height: 28px;
+  padding: 0 12px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-pill);
+  transition: background 0.2s, color 0.2s;
+}
+
+.range-toggle__button:hover:not(.is-active) {
+  color: var(--text);
+}
+
+.range-toggle__button.is-active {
+  color: var(--text-inverse);
+  background: var(--text);
+}
+
+/* Günlük tahmin: tek panel içinde satırlar */
+.forecast {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  list-style: none;
+  transition: opacity 0.2s;
+}
+
+.forecast.is-loading {
+  opacity: 0.5;
+}
+
+.forecast__status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: -6px 0 12px;
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}
+
+.forecast__status--notice {
+  color: var(--warm);
+}
+
+.forecast__item {
+  display: grid;
+  grid-template-columns: minmax(0, 220px) 44px minmax(0, 1fr);
+  align-items: center;
+  gap: 20px;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  transition: background 0.2s;
+}
+
+.forecast__item:hover {
+  background: var(--glass-light);
+}
+
+.forecast__day {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  min-width: 0;
+  font-weight: 600;
+}
+
+/* Dar ekranda gün adı kısalır ("Çarşa…"), tarih her zaman tam görünür. */
+.forecast__day-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+/* "6 Eki": 15 günde aynı gün adı iki kez geçtiği için */
+.forecast__date {
+  flex-shrink: 0;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--text-subtle);
+}
+
+.forecast__description {
+  font-size: 0.8125rem;
+  color: var(--text-subtle);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.forecast__temps {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.forecast__low,
+.forecast__high {
+  flex-shrink: 0;
+  min-width: 2.5em;
+  font-variant-numeric: tabular-nums;
+}
+
+.forecast__low {
+  text-align: right;
+  color: var(--text-subtle);
+}
+
+.forecast__high {
+  font-weight: 600;
+}
+
+/* Listedeki tüm günlerin aralığı içinde günün min–max çubuğu */
+.forecast__bar {
+  position: relative;
+  flex: 1;
+  height: 6px;
+  background: color-mix(in srgb, var(--text) 10%, transparent);
+  border-radius: var(--radius-pill);
+}
+
+.forecast__bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--range-start);
+  right: var(--range-end);
+  min-width: 6px;
+  background: linear-gradient(90deg, #8fb8ff, var(--accent), var(--warm));
+  border-radius: inherit;
+}
+
+/* Hava detayları */
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+/* ==========================================================================
+   Arka plan hava animasyonları (bkz. WeatherAtmosphere)
+   Gökyüzü ile yıldızların arasında, içeriğin arkasında durur; cam kartlar
+   arkasındaki parçacıkları bulanıklaştırdığı için okunabilirlik etkilenmez.
+   Her katman tek eleman: parçacıklar tekrarlanan gradyan karolarıdır ve
+   karo yüksekliği kadar kaydırılır (kesintisiz döngü, yalnızca transform).
+   ========================================================================== */
+.atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  animation: atmosphere-in 1.2s ease both;
+}
+
+@keyframes atmosphere-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.atmosphere__layer {
+  position: absolute;
+  /* Üstte bir karo boyu, yanlarda salınım payı kadar fazlası: kayarken boşluk kalmasın. */
+  inset: calc(-1 * var(--tile-h)) -24px 0 -24px;
+  background-size: var(--tile-w) var(--tile-h);
+  will-change: transform;
+  animation: atmosphere-fall var(--duration) linear infinite;
+}
+
+@keyframes atmosphere-fall {
+  50% {
+    transform: translate3d(var(--drift, 0px), calc(var(--tile-h) / 2), 0);
+  }
+  to {
+    transform: translate3d(0, var(--tile-h), 0);
+  }
+}
+
+/* Yağmur: ince, yavaş düşen çizgiler */
+.atmosphere__rain--near {
+  --tile-w: 150px;
+  --tile-h: 230px;
+  --duration: 1.7s;
+  background-image:
+    radial-gradient(1.2px 10px at 22px 40px, var(--rain-color), transparent),
+    radial-gradient(1.2px 12px at 81px 132px, var(--rain-color), transparent),
+    radial-gradient(1.2px 9px at 128px 196px, var(--rain-color), transparent);
+}
+
+.atmosphere__rain--far {
+  --tile-w: 110px;
+  --tile-h: 170px;
+  --duration: 2.6s;
+  opacity: 0.7;
+  background-image:
+    radial-gradient(1px 7px at 14px 24px, var(--rain-color), transparent),
+    radial-gradient(1px 8px at 62px 98px, var(--rain-color), transparent),
+    radial-gradient(1px 6px at 95px 150px, var(--rain-color), transparent);
+}
+
+/* Çisenti / donan çisenti: yalnızca uzak katman, daha soluk */
+.atmosphere--drizzle .atmosphere__rain--far {
+  opacity: 0.55;
+}
+
+/* Fırtına: yağmur biraz daha hızlı ve belirgin (hâlâ hafif) */
+.atmosphere--storm .atmosphere__rain--near {
+  --duration: 1.25s;
+}
+
+.atmosphere--storm .atmosphere__rain--far {
+  --duration: 1.9s;
+  opacity: 0.85;
+}
+
+/* Kar: yavaş, hafifçe yana salınan taneler */
+.atmosphere__snow--near {
+  --tile-w: 210px;
+  --tile-h: 270px;
+  --duration: 16s;
+  --drift: 14px;
+  background-image:
+    radial-gradient(circle 2.4px at 30px 50px, var(--snow-color) 55%, transparent),
+    radial-gradient(circle 2px at 120px 140px, var(--snow-color) 55%, transparent),
+    radial-gradient(circle 2.6px at 180px 230px, var(--snow-color) 55%, transparent),
+    radial-gradient(circle 1.8px at 75px 215px, var(--snow-color) 55%, transparent);
+}
+
+.atmosphere__snow--far {
+  --tile-w: 150px;
+  --tile-h: 200px;
+  --duration: 24s;
+  --drift: -10px;
+  opacity: 0.7;
+  background-image:
+    radial-gradient(circle 1.5px at 20px 30px, var(--snow-color) 55%, transparent),
+    radial-gradient(circle 1.3px at 95px 110px, var(--snow-color) 55%, transparent),
+    radial-gradient(circle 1.6px at 135px 175px, var(--snow-color) 55%, transparent);
+}
+
+/* Gök gürültüsü: ilki ~2 sn sonra, sonra yaklaşık 19 saniyede bir çok kısa ve yumuşak bir ışık.
+   Sürekli yanıp sönme yok; döngünün %95'i karanlık. */
+.atmosphere__flash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 30% 0%, rgba(255, 255, 255, 0.55), transparent 70%);
+  opacity: 0;
+  animation: atmosphere-flash 19s ease-out 2s infinite;
+}
+
+@keyframes atmosphere-flash {
+  0% {
+    opacity: 0;
+  }
+  0.8% {
+    opacity: 0.45;
+  }
+  1.8% {
+    opacity: 0;
+  }
+  2.8% {
+    opacity: 0.22;
+  }
+  5%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+@media (max-width: 860px) {
+  .navbar__inner {
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      'brand actions'
+      'search search';
+    gap: 10px 16px;
+    padding-top: 10px;
+    padding-bottom: 12px;
+  }
+
+  .navbar__actions {
+    justify-self: end;
+  }
+
+  .search {
+    max-width: none;
+  }
+
+  .details-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --gutter: 16px;
+    --space-section: 20px;
+  }
+
+  .page {
+    padding-top: 16px;
+  }
+
+  .panel {
+    padding: 20px 16px;
+    border-radius: var(--radius-lg);
+  }
+
+  .hero {
+    padding-top: 8px;
+  }
+
+  .hero__art > svg {
+    width: 128px;
+    height: 128px;
+  }
+
+  .hero__stats {
+    gap: 8px;
+  }
+
+  .hero__stats .info-tile {
+    align-items: center;
+    padding: 14px 8px;
+    text-align: center;
+  }
+
+  .hero__stats .info-tile__label {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .hero__stats .info-tile__value {
+    font-size: 1.0625rem;
+  }
+
+  .forecast__item {
+    grid-template-columns: minmax(0, 1.3fr) 36px minmax(0, 1fr);
+    gap: 10px;
+    padding: 10px 6px;
+  }
+
+  .forecast__item svg {
+    width: 36px;
+    height: 36px;
+  }
+
+  .forecast__temps {
+    gap: 6px;
+  }
+
+  .forecast__low,
+  .forecast__high {
+    min-width: 2em;
+  }
+
+  .details-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .details-grid .info-tile {
+    padding: 14px;
+  }
+
+  .info-tile__value {
+    font-size: 1.0625rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .navbar__brand span {
+    display: none;
+  }
+
+  .search__button {
+    min-width: 0;
+    padding: 0 16px;
+  }
+
+  .hero__city {
+    font-size: 1.25rem;
+  }
+
+  .hero__art > svg {
+    width: 96px;
+    height: 96px;
+  }
+
+  .forecast__bar {
+    display: none;
+  }
+
+  /* Çubuk gizlenince sıcaklıklar yalnızca gerektiği kadar yer kaplar. */
+  .forecast__item {
+    grid-template-columns: minmax(0, 1fr) 36px auto;
+  }
+
+  .forecast__temps {
+    justify-content: flex-end;
+  }
+}
+
+/* Hareket azaltma tercihine saygı */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+
+  .spinner {
+    animation: none;
+  }
+
+  /* Hareket azaltmayı seçenler için hava animasyonları tamamen kapalı. */
+  .atmosphere {
+    display: none;
+  }
+}
