@@ -1,130 +1,311 @@
-# Weather Dashboard
+<div align="center">
 
-A weather dashboard built with React, TypeScript and Vite that shows live weather data from the Open-Meteo API. You can search for any city or use your device's location. It shows current conditions, an hourly forecast and daily forecasts of up to 15 days. The theme switches between day and night based on the location you're viewing.
+# 🌦️ Weather Dashboard
 
-> The user interface is currently available in Turkish.
+### Modern, location-aware weather forecasting with dynamic themes
 
-## Features
+A responsive weather application built with **React, TypeScript and Vite**, providing real-time weather data, location-aware forecasts, favorites, detailed weather metrics and dynamic atmospheric effects.
 
-- Search weather by city
-- Use current device location
-- Neighborhood / district / city detection
-- Current temperature
-- Feels-like temperature
-- Humidity
-- Wind speed
-- Wind direction
-- Atmospheric pressure
-- Visibility
-- UV index
-- Precipitation probability
-- Sunrise and sunset
-- Hourly forecast
-- 7-day forecast
-- 15-day forecast
-- Celsius / Fahrenheit switching
-- Favorite locations
-- Recent searches
-- LocalStorage persistence
-- Dynamic day/night theme
-- Weather-based atmosphere effects for rain, snow and storms
-- Responsive layout
+> The application interface is currently available in Turkish.
 
-## Tech Stack
+<br>
+
+![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-8-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![Open-Meteo](https://img.shields.io/badge/Open--Meteo-Weather_API-4A90E2?style=for-the-badge)
+
+</div>
+
+---
+
+## ✨ About
+
+**Weather Dashboard** is a modern weather application designed to provide detailed and location-aware weather information in a clean and responsive interface.
+
+Users can search for cities manually or use their device location to retrieve weather information for their current area. When location access is used, the application can display more detailed location information such as **neighborhood, district and city**.
+
+The interface automatically adapts between **day and night themes** depending on the selected location, while weather conditions such as rain can trigger subtle atmospheric animations.
+
+---
+
+## 🚀 Features
+
+- 🔍 Search weather by city
+- 📍 Detect current device location
+- 🏘️ Neighborhood, district and city detection
+- 🌡️ Current temperature
+- 🤒 Feels-like temperature
+- 💧 Humidity
+- 💨 Wind speed and direction
+- 🌧️ Precipitation probability
+- 🌡️ Atmospheric pressure
+- 👁️ Visibility
+- ☀️ UV index
+- 🌅 Sunrise and sunset
+- 🕐 Hourly weather forecast
+- 📅 7-day forecast
+- 📆 15-day forecast
+- 🌡️ Celsius / Fahrenheit switching
+- ⭐ Favorite locations
+- 🕘 Recent searches
+- 💾 Persistent preferences with LocalStorage
+- 🌞 Dynamic daytime theme
+- 🌙 Dynamic nighttime theme
+- 🌧️ Weather-based atmospheric effects
+- 📱 Responsive design for desktop, tablet and mobile
+
+---
+
+## 🛠️ Tech Stack
 
 | Technology | Purpose |
-| --- | --- |
-| React | User interface |
-| TypeScript | Type safety |
-| Vite | Development and build tooling |
-| Open-Meteo | Weather, forecast and city search (geocoding) data |
-| OpenStreetMap Nominatim | Reverse geocoding (coordinates to place names) |
-| BigDataCloud | Fallback reverse geocoding |
-| Geolocation API | Current device location |
-| LocalStorage | Favorites, recent searches and preferences |
-| CSS | Styling, responsive layout and weather animations |
+|---|---|
+| **React** | User interface and component architecture |
+| **TypeScript** | Type safety and maintainable code |
+| **Vite** | Development server and production build |
+| **Open-Meteo API** | Current weather and forecast data |
+| **Open-Meteo Geocoding** | City search and coordinate lookup |
+| **OpenStreetMap Nominatim** | Reverse geocoding |
+| **BigDataCloud** | Reverse geocoding fallback |
+| **Browser Geolocation API** | Detecting the user's current position |
+| **LocalStorage** | Favorites, recent searches and preferences |
+| **CSS** | Responsive design, themes and animations |
 
-React and React DOM are the only runtime dependencies. The project uses no UI, styling or animation libraries.
+---
 
-## Installation
+## 🎨 Dynamic Weather Experience
 
-Requires Node.js 20.19+ or 22.12+.
+The application does more than display weather values.
 
-1. Clone the repository
-2. Enter the project directory
-3. Install dependencies
-4. Start the development server
+### Day & Night Themes
+
+The interface automatically changes according to the **local day/night status of the selected location**.
+
+**Day**
+- Light lavender and blue-gray palette
+- Bright weather icons
+- Soft cards and backgrounds
+
+**Night**
+- Purple-gray color palette
+- Darker cards and surfaces
+- Moon and nighttime weather visuals
+
+### Weather Effects
+
+Atmospheric effects are automatically triggered using real weather codes.
+
+- 🌧️ Rain → subtle rain animation
+- ❄️ Snow → snow animation
+- ⛈️ Thunderstorm → light storm effect
+- ☀️ Clear / Cloudy → clean background without unnecessary effects
+
+---
+
+## 📍 Location-Aware Weather
+
+The application can use the browser's Geolocation API to retrieve the user's coordinates.
+
+When available, location information can be displayed in a detailed format such as:
+
+```text
+İzzet Paşa Mahallesi
+Merkez, Elazığ
+Türkiye
+```
+
+Weather forecasts are then requested using the detected coordinates instead of relying only on the city center.
+
+---
+
+## ⭐ Favorites & Recent Searches
+
+Favorite locations and recent searches are stored locally in the browser.
+
+This allows users to:
+
+- Save frequently checked locations
+- Quickly reopen favorite places
+- Access recently searched cities
+- Keep preferences after refreshing or reopening the application
+
+Favorite locations also store coordinate information when available, helping prevent incorrect matches between locations with similar names.
+
+---
+
+## 📊 Forecasts
+
+### Hourly Forecast
+
+Displays weather conditions for the upcoming hours including:
+
+- Time
+- Weather condition
+- Weather icon
+- Temperature
+
+### Daily Forecast
+
+Users can switch between:
+
+- **7-Day Forecast**
+- **15-Day Forecast**
+
+Each forecast includes:
+
+- Day and date
+- Weather condition
+- Weather icon
+- Minimum temperature
+- Maximum temperature
+- Visual temperature range
+
+---
+
+## ⚙️ Installation
+
+### 1. Clone the repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/altunyuvao/weather-dashboard.git
+```
+
+### 2. Enter the project directory
+
+```bash
 cd weather-dashboard
+```
+
+### 3. Install dependencies
+
+```bash
 npm install
+```
+
+### 4. Start the development server
+
+```bash
 npm run dev
 ```
 
-Then open the local URL that Vite prints (by default `http://localhost:5173`).
+Vite will provide a local development address, usually:
 
-The location feature only works in a secure context: `localhost` during development, or HTTPS in production.
+```text
+http://localhost:5173
+```
 
-## Production Build
+---
+
+## 📦 Production Build
+
+Create an optimized production build with:
 
 ```bash
 npm run build
 ```
 
-This type-checks the project and writes the production build to the `dist` folder. You can preview it locally with `npm run preview`.
-
-## Project Structure
+The generated production files will be available inside the:
 
 ```text
-src/
-├── components/   UI components (search bar, current weather, forecasts, favorites menu, atmosphere effects)
-├── hooks/        Custom React hooks for weather loading, daily forecasts, theme and localStorage state
-├── services/     API access: Open-Meteo, reverse geocoding, geolocation and error handling
-├── types/        Shared TypeScript types for app data and API responses
-├── utils/        Helpers for weather codes, temperature units, place names, saved lists and storage
-├── App.tsx       Root component that holds the application state
-├── main.tsx      Application entry point
-└── index.css     Global styles, theme variables, responsive rules and animations
+dist/
 ```
 
-## APIs and Data Sources
+directory.
 
-- **Open-Meteo Forecast API** provides current conditions, hourly data and daily forecasts (`forecast_days` 7 or 15).
-- **Open-Meteo Geocoding API** turns a searched city name into coordinates.
-- **OpenStreetMap Nominatim** turns device coordinates into a neighborhood, district and city name. It is called only when the user presses the location button.
-- **BigDataCloud** (reverse geocoding client endpoint) is used as a fallback when Nominatim is unavailable.
+---
 
-None of these services require an API key.
+## 📁 Project Structure
 
-Place names from Nominatim are OpenStreetMap data, licensed under the [ODbL](https://www.openstreetmap.org/copyright). When a location is resolved through Nominatim, the app shows the required attribution below the weather details ("© OpenStreetMap katkıcıları", the Turkish form of "© OpenStreetMap contributors"). Nominatim's [usage policy](https://operations.osmfoundation.org/policies/nominatim/) limits requests to one per second.
+```text
+weather-dashboard/
+│
+├── public/
+│
+├── src/
+│   ├── components/   # Reusable UI components
+│   ├── hooks/        # Custom React hooks
+│   ├── services/     # Weather, geolocation and API services
+│   ├── types/        # TypeScript type definitions
+│   ├── utils/        # Helper and conversion functions
+│   ├── App.tsx
+│   ├── index.css
+│   └── main.tsx
+│
+├── README.md
+├── package.json
+├── tsconfig.json
+└── vite.config.ts
+```
 
-## Design
+---
 
-- Dynamic day/night color palette, based on the viewed location's local day/night data rather than the user's clock
-- Lavender and blue-gray daytime theme
-- Purple-gray nighttime theme
-- Smooth color transitions when the theme changes
-- Weather-based atmospheric effects (drizzle, rain, snow and a soft lightning flash), disabled when the system's reduced-motion setting is on
-- Responsive design for desktop, tablet and mobile
+## 🌐 Data Sources
 
-## Quality Checks
+### Open-Meteo
 
-- TypeScript is used throughout the project
-- `npm run lint` (Oxlint) passes successfully
-- `npm run build` passes successfully
+Used for:
 
-## Future Improvements
+- Current weather
+- Hourly forecasts
+- 7-day forecasts
+- 15-day forecasts
+- Weather codes
+- Geocoding
 
-- Multi-language support
-- PWA support
-- Weather notifications
-- Map-based location selection
+No API key is required for the current Open-Meteo integration.
 
-## Developer
+### OpenStreetMap Nominatim
 
-Developed by **Özge Altunyuva**.
+Used for reverse geocoding to convert coordinates into readable location information such as neighborhood, district and city.
 
-## License
+### BigDataCloud
 
-License information will be added later.
+Used as a fallback reverse-geocoding service when required.
+
+---
+
+## ✅ Quality Checks
+
+The project has been checked with:
+
+```bash
+npm run lint
+npm run build
+```
+
+Current status:
+
+- ✅ ESLint passed
+- ✅ Production build passed
+- ✅ No remaining build warnings
+
+---
+
+## 🔮 Future Improvements
+
+Possible future additions include:
+
+- 🌍 Multi-language support
+- 📲 Progressive Web App (PWA) support
+- 🔔 Weather alerts and notifications
+- 🗺️ Interactive map-based location selection
+- 📈 Additional weather charts and visualizations
+
+---
+
+## 👩‍💻 Developer
+
+**Özge Altunyuva**
+
+Computer Engineering Student
+
+---
+
+<div align="center">
+
+### ☁️ Weather information, made simple.
+
+Built with React + TypeScript
+
+</div>
